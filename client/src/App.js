@@ -27,7 +27,9 @@ function App() {
   }
 
   return (
-    <div>
+    <div style={{
+      textAlign: 'center'
+    }}>
       <h2>Com-Ha</h2>
       <form onSubmit={submitHander}>
         <textarea
@@ -39,7 +41,7 @@ function App() {
           placeholder='이 곳에 코드를 입력하세요.'
           onChange={changeCodeHandler}
         />
-        <button type='submit'>입력하기</button>
+        <p><button type='submit'>입력하기</button></p>
       </form>
       <hr/>
       <h3>실행 결과</h3>
