@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { loopKeyword, variableKeyword } from './keyword';
+import { loopKeyword, numberKeyword, stringKeyword, variableKeyword } from './keyword';
 
 const app = express();
 
@@ -29,18 +29,49 @@ app.post('/', (req: Request, res: Response) => {
         // 변수인 경우
         if (token.includes(variableKeyword['variable'])) {
             const name = token.split('학생')[0];
-            const value = token.split('?')[1];
+            let value: string | number = token.split('?')[1];
+            
+            // 변수 값 검증
+            if (value.includes(stringKeyword['stringStart'])) {
+                const startIndex = value.indexOf(stringKeyword['stringStart']) + 7;
+                const endIndex = value.indexOf(stringKeyword['stringEnd']);
+                value = value.substring(startIndex, endIndex);
+            } else if (value.includes(numberKeyword['numberStart'])) {
+                const comma = value.split(numberKeyword['numberStart'])[1];
+                let numbers = 0;
+                for (let x of comma) {
+                    if (x === ',') numbers++;
+                }
+                value = numbers;
+            } else {
+                throw new Error('타입이 일치하지 않습니다.');
+            }
+
             variableList.push([name, value]);
         }
 
         // 상수인 경우
         if (token.includes(variableKeyword['constVariable'])) {
             const name = token.split('학생')[0];
-            const value = token.split('??')[1];
+            let value: string | number = token.split('??')[1];
+            // 변수 값 검증
+            if (value.includes(stringKeyword['stringStart'])) {
+                const startIndex = value.indexOf(stringKeyword['stringStart']) + 7;
+                const endIndex = value.indexOf(stringKeyword['stringEnd']);
+                value = value.substring(startIndex, endIndex);
+            } else if (value.includes(numberKeyword['numberStart'])) {
+                const comma = value.split(numberKeyword['numberStart'])[1];
+                let numbers = 0;
+                for (let x of comma) {
+                    if (x === ',') numbers++;
+                }
+                value = numbers;
+            } else {
+                throw new Error('타입이 일치하지 않습니다.');
+            }
+
             constVariableList.push([name, value]);
         }
-
-        console.log(variableList, constVariableList);
 
         // 반복문인지 확인하기
         if (token.includes(loopKeyword['loopStart'])) {
