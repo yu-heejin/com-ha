@@ -5,6 +5,9 @@
   "repository": "https://github.com/yu-heejin/computer-som-language.git",
   "author": "yu-heejin <jkgt0521@naver.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/app.ts"
+  },
   "devDependencies": {
     "@types/express": "^4.17.18",
     "@types/node": "^20.7.0",
