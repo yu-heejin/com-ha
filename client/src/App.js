@@ -3,6 +3,7 @@ import axios from 'axios';
 
 function App() {
   const [text, setText] = useState('');
+  const [res, setRes] = useState([]);
 
   const changeCodeHandler = (e) => {
     setText(e.target.value);
@@ -10,8 +11,6 @@ function App() {
 
   const submitHander = async (e) => {
     e.preventDefault();
-
-    console.log(text);
 
     const result = await axios({
       url: 'http://localhost:3001',
@@ -24,7 +23,7 @@ function App() {
       }
     });
 
-    console.log(result);
+    setRes(result.data);
   }
 
   return (
@@ -44,6 +43,11 @@ function App() {
       </form>
       <hr/>
       <h3>실행 결과</h3>
+      {res.map((value) => {
+        return (
+          <p>{value}</p>
+        )
+      })}
     </div>
   );
 }

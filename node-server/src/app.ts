@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { loopKeyword, numberKeyword, stringKeyword, variableKeyword } from './keyword';
+import { consoleKeyword, loopKeyword, numberKeyword, stringKeyword, variableKeyword } from './keyword';
 
 const app = express();
 
@@ -21,6 +21,7 @@ app.post('/', (req: Request, res: Response) => {
     const arr = text.split('\n');
     const constVariableList = [];
     const variableList = [];
+    const result = [];
 
     for (const a of arr) {
         const token = a as string;
@@ -84,9 +85,15 @@ app.post('/', (req: Request, res: Response) => {
 
             }
         }
+
+        // 콘솔문인지 확인하기
+        if (token.includes(consoleKeyword['print'])) {
+            const value = token.split('.')[1];
+            result.push(value);
+        }
     }
 
-    res.status(200).send();
+    res.status(200).send(result);
 });
 
 app.listen('3001', () => {
