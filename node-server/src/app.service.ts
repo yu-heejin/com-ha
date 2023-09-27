@@ -1,14 +1,13 @@
-import { validateValues } from "./app.util";
-import { consoleKeyword, loopKeyword, variableKeyword } from "./keyword";
+import { getCount, validateValues } from "./app.util";
+import { consoleKeyword, loopKeyword, operatorKeyword, variableKeyword } from "./keyword";
 
 export const service = (text: string) => {
-    const arr = text.split('\n');
+    const arr: string[] = text.split('\n');
     const constVariableList = [];
     const variableList = [];
     const result = [];
 
-    for (const a of arr) {
-        const token = a as string;
+    for (const token of arr) {
         if (token === '') continue;
 
         // 변수인 경우
@@ -27,10 +26,12 @@ export const service = (text: string) => {
 
         // 반복문인지 확인하기
         if (token.includes(loopKeyword['loopStart'])) {
-            let loopCount = 0;
-            for (let x of token) {
-                if (x === '~') loopCount++;
-            }
+            const loopCount = getCount(token, '~');
+        }
+
+        // 연산문인지 확인
+        if (token.includes(operatorKeyword['operator'])) {
+
         }
 
         // 콘솔문인지 확인하기

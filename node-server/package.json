@@ -2,7 +2,7 @@
   "name": "com-ha",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/yu-heejin/computer-som-language.git",
+  "repository": "https://github.com/yu-heejin/com-ha.git",
   "author": "yu-heejin <jkgt0521@naver.com>",
   "license": "MIT",
   "scripts": {
