@@ -4,8 +4,11 @@
 - 해당 프로젝트는 `Node.js + Typescript` 기반으로 개발되었으며, 다른 프레임워크로 개발해보고 싶으신 분은 PR을 올려주시면 반영하겠습니다.
 - 오류 발생 시 이슈로 올려주시면 검토하겠습니다.
 - 추가적인 기능 개발, 제가 몰랐던 어록 역시 PR을 올려주시면 반영하겠습니다.
+- 커밋 시 별도의 커밋 컨벤션은 없지만, 되도록 gitmoji를 사용해주시면 감사하겠습니다. (_ _)
+    - [gitmoji 사용법](https://inpa.tistory.com/entry/GIT-%E2%9A%A1%EF%B8%8F-Gitmoji-%EC%82%AC%EC%9A%A9%EB%B2%95-Gitmoji-cli)
 
 ## 교수님들 어록 모음
+* [어록](https://github.com/yu-heejin/com-ha/blob/main/docs/%EC%96%B4%EB%A1%9D%20%EB%AA%A8%EC%9D%8C.md)
 
 ## Contributor
 
