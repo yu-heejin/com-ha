@@ -34,8 +34,8 @@ function App() {
       <form onSubmit={submitHander}>
         <textarea
           style={{
-            width: '300px',
-            height: '300px'
+            width: '30rem',
+            height: '30rem'
           }}
           name='text'
           placeholder='이 곳에 코드를 입력하세요.'
