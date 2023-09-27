@@ -5,7 +5,7 @@
 		"lib": ["es6", "dom"],
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"typeRoots": ["./node_modules/@types", "src/type"],
+		"typeRoots": ["node/node_modules/@types", "src/type"],
 		"resolveJsonModule": true,
 		"outDir": "dist",
 		"esModuleInterop": true,
