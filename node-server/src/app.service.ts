@@ -1,4 +1,4 @@
-import { getCount, validateValues } from "./app.util";
+import { getCount, getOperatorAndValue, validateValues } from "./app.util";
 import { consoleKeyword, loopKeyword, operatorKeyword, variableKeyword } from "./keyword";
 
 export const service = (text: string) => {
@@ -7,8 +7,30 @@ export const service = (text: string) => {
     const variableList = [];
     const result = [];
 
-    for (const token of arr) {
+    let isNextLoop = false;
+    let loopCount = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        let token = arr[i];
         if (token === '') continue;
+
+        if (isNextLoop) {
+            for (let j = 0; j < loopCount; j++) {
+                if (token.includes(operatorKeyword['operator'])) {
+                    const { operator, value } = getOperatorAndValue(token);
+                    const number = validateValues(value);
+                } else if (token.includes(consoleKeyword['print'])) {
+                    const value = token.split('.')[1];
+                    result.push(value);
+                }
+                i++;
+                token = arr[i];
+            }
+            if (token === loopKeyword['loopEnd']) {
+                isNextLoop = false;
+            }
+            continue;
+        }
 
         // 변수인 경우
         if (token.includes(variableKeyword['variable'])) {
@@ -25,17 +47,18 @@ export const service = (text: string) => {
         }
 
         // 반복문인지 확인하기
+        // 반복문 안에 변수, 연산, 콘솔 확인
         if (token.includes(loopKeyword['loopStart'])) {
-            const loopCount = getCount(token, '~');
-            for (let i = 0; i < loopCount; i++) {
-
-            }
+            loopCount = getCount(token, '~');
+            isNextLoop = true;
         }
 
         // 연산문인지 확인
+        // 변수가 있는지 확인
         if (token.includes(operatorKeyword['operator'])) {
-            const op = token.charAt(0);
-            switch (op) {
+            const { operator, value } = getOperatorAndValue(token);
+
+            switch (operator) {
                 case operatorKeyword['plus']:
                     break;
                 case operatorKeyword['minus']:
@@ -52,6 +75,7 @@ export const service = (text: string) => {
         }
 
         // 콘솔문인지 확인하기
+        // 변수, 문자열인 경우 확인
         if (token.includes(consoleKeyword['print'])) {
             const value = token.split('.')[1];
             result.push(value);

@@ -1,4 +1,4 @@
-import { numberKeyword, stringKeyword } from "./keyword";
+import { numberKeyword, operatorKeyword, stringKeyword } from "./keyword";
 
 /**
  * 변수 값 검증
@@ -38,4 +38,14 @@ export const getCount = (str: string, separator: string) => {
     }
 
     return numbers;
+}
+
+/**
+ * 연산자 및 더할 값 추출
+ * @param str(코드)
+ * @returns { 연산자, 더할 값 }
+ */
+export const getOperatorAndValue = (token: string) => {
+    const str = token.split(operatorKeyword['operator']);
+    return { operator: str[0].charAt(str[0].length - 1), value: str[1] };
 }
