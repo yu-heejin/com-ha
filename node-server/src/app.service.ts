@@ -77,17 +77,8 @@ export const service = (text: string) => {
         // 콘솔문인지 확인하기
         // 변수, 문자열, 숫자인 경우 확인
         if (token.includes(consoleKeyword['print'])) {
-            const value = token.split('.')[1];
-            
-            if (token.includes(stringKeyword['stringStart'])) {
-                const startIndex = value.indexOf(stringKeyword['stringStart']) + 7;
-                const endIndex = value.indexOf(stringKeyword['stringEnd']);
-                result.push(value.substring(startIndex, endIndex));
-            } else if (token.includes(numberKeyword['numberStart'])) {
-                const comma = value.split(numberKeyword['numberStart'])[1];
-                result.push(getCount(comma, ','));
-            }
-            
+            const value = validateValues(token.split('.')[1]);
+            result.push(value);
         }
     }
 
