@@ -22,6 +22,11 @@ export const validateValues = (value: string) => {
     throw new Error('타입이 일치하지 않습니다.');
 }
 
+export const countNumber = (value: string) => {
+    const comma = value.split(numberKeyword['numberStart'])[1];
+    return getCount(comma, ',') || 0;
+}
+
 /**
  * 문자 속 문자 개수 찾기
  * @param str(전체 문자열)
@@ -47,5 +52,26 @@ export const getCount = (str: string, separator: string) => {
  */
 export const getOperatorAndValue = (token: string) => {
     const str = token.split(operatorKeyword['operator']);
-    return { operator: str[0].charAt(str[0].length - 1), value: str[1] };
+    return {
+        operator: str[0].charAt(str[0].length - 1),
+        value: validateValues(str[1]),
+    };
+}
+
+/**
+ * 배열 안에 해당 값이 있는지 확인
+ * @param name(변수명)
+ * @param variableList(변수 목록)
+ * @returns value
+ */
+export const getValue = (name: string, variableList: (string | number)[][]) => {
+    let value;
+
+    variableList.map((variable) => {
+        if (variable[0] === name) {
+            value = variable[1];
+        }
+    });
+
+    return value;
 }

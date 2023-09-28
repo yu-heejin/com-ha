@@ -1,4 +1,4 @@
-import { getCount, getOperatorAndValue, validateValues } from "./app.util";
+import { countNumber, getCount, getOperatorAndValue, getValue, validateValues } from "./app.util";
 import { consoleKeyword, loopKeyword, numberKeyword, operatorKeyword, stringKeyword, variableKeyword } from "./keyword";
 
 export const service = (text: string) => {
@@ -12,13 +12,13 @@ export const service = (text: string) => {
 
     for (let i = 0; i < arr.length; i++) {
         let token = arr[i];
+        console.log(i, token);
         if (token === '') continue;
 
         if (isNextLoop) {
             for (let j = 0; j < loopCount; j++) {
                 if (token.includes(operatorKeyword['operator'])) {
                     const { operator, value } = getOperatorAndValue(token);
-                    const number = validateValues(value);
                 } else if (token.includes(consoleKeyword['print'])) {
                     const value = token.split('.')[1];
                     result.push(value);
@@ -28,6 +28,7 @@ export const service = (text: string) => {
             }
             if (token === loopKeyword['loopEnd']) {
                 isNextLoop = false;
+                loopCount = 0;
             }
             continue;
         }
@@ -57,29 +58,64 @@ export const service = (text: string) => {
         // 변수가 있는지 확인
         if (token.includes(operatorKeyword['operator'])) {
             const { operator, value } = getOperatorAndValue(token);
+            const firstToken = token.split(operatorKeyword['operator'])[0];
+            const secondToken = token.split(operatorKeyword['operator'])[1];
+            let first, second;
 
-            switch (operator) {
-                case operatorKeyword['plus']:
-                    break;
-                case operatorKeyword['minus']:
-                    break;
-                case operatorKeyword['divide']:
-                    break;
-                case operatorKeyword['multiple']:
-                    break;
-                case operatorKeyword['remain']:
-                    break;
-                default:
-                    throw new Error('올바른 연산자가 아닙니다.');
+            // get first
+            if (firstToken.includes('학생?')) {
+                const name = firstToken.split('학생?')[0];
+                first = getValue(name, variableList);
+            } else if (firstToken.includes(numberKeyword['numberStart'])){
+                first = countNumber(firstToken);
+            }
+
+            // get second
+            if (secondToken.includes('학생?')) {
+                const name = secondToken.split('학생?')[0];
+                second = getValue(name, variableList);
+            } else if (token.includes(numberKeyword['numberStart'])){
+                second = countNumber(secondToken);
+            }
+
+            if (first && second) {
+                switch (operator) {
+                    case operatorKeyword['plus']:
+                        first += second;
+                        break;
+                    case operatorKeyword['minus']:
+                        first -= second;
+                        break;
+                    case operatorKeyword['divide']:
+                        first /= second;
+                        break;
+                    case operatorKeyword['multiple']:
+                        first *= second;
+                        break;
+                    case operatorKeyword['remain']:
+                        first %= second;
+                        break;
+                    default:
+                        throw new Error('올바른 연산자가 아닙니다.');
+                }
+
+                if (token.includes(consoleKeyword['print'])) {
+                    result.push(first);
+                }
+            } else {
+                throw new Error('값에 문제가 있거나 해당하는 변수를 찾을 수 없습니다.');
             }
         }
 
+        console.log(result);
         // 콘솔문인지 확인하기
         // 변수, 문자열, 숫자인 경우 확인
         if (token.includes(consoleKeyword['print'])) {
             const value = validateValues(token.split('.')[1]);
             result.push(value);
         }
+
+        console.log(result);
     }
 
     return result;
