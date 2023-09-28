@@ -12,7 +12,7 @@ export const service = (text: string) => {
 
     for (let i = 0; i < arr.length; i++) {
         let token = arr[i];
-        console.log(i, token);
+        console.log(i, token, arr.length);
         if (token === '') continue;
 
         if (isNextLoop) {
@@ -23,8 +23,11 @@ export const service = (text: string) => {
                     const value = token.split('.')[1];
                     result.push(value);
                 }
-                i++;
-                token = arr[i];
+                const nextToken = arr[i + 1];
+                if (token !== nextToken && token !== loopKeyword['loopEnd']) {
+                    i++;
+                    token = arr[i];
+                }
             }
             if (token === loopKeyword['loopEnd']) {
                 isNextLoop = false;
@@ -38,25 +41,14 @@ export const service = (text: string) => {
             const name = token.split('학생')[0];
             const value: string | number = validateValues(token.split('?')[1]);
             variableList.push([name, value]);
-        }
-
-        // 상수인 경우
-        if (token.includes(variableKeyword['constVariable'])) {
+        } else if (token.includes(variableKeyword['constVariable'])) {
             const name = token.split('학생')[0];
             const value: string | number = validateValues(token.split('??')[1]);
             constVariableList.push([name, value]);
-        }
-
-        // 반복문인지 확인하기
-        // 반복문 안에 변수, 연산, 콘솔 확인
-        if (token.includes(loopKeyword['loopStart'])) {
+        } else if (token.includes(loopKeyword['loopStart'])) {
             loopCount = getCount(token, '~');
             isNextLoop = true;
-        }
-
-        // 연산문인지 확인
-        // 변수가 있는지 확인
-        if (token.includes(operatorKeyword['operator'])) {
+        } else if (token.includes(operatorKeyword['operator'])) {
             const { operator, value } = getOperatorAndValue(token);
             const firstToken = token.split(operatorKeyword['operator'])[0];
             const secondToken = token.split(operatorKeyword['operator'])[1];
@@ -105,17 +97,12 @@ export const service = (text: string) => {
             } else {
                 throw new Error('값에 문제가 있거나 해당하는 변수를 찾을 수 없습니다.');
             }
-        }
-
-        console.log(result);
-        // 콘솔문인지 확인하기
-        // 변수, 문자열, 숫자인 경우 확인
-        if (token.includes(consoleKeyword['print'])) {
+        } else if (token.includes(consoleKeyword['print'])) {
             const value = validateValues(token.split('.')[1]);
             result.push(value);
+        } else {
+            throw new Error('올바른 문법이 아닙니다.');
         }
-
-        console.log(result);
     }
 
     return result;
