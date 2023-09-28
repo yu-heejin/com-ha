@@ -1,11 +1,11 @@
 import { getCount, getOperatorAndValue, validateValues } from "./app.util";
-import { consoleKeyword, loopKeyword, operatorKeyword, variableKeyword } from "./keyword";
+import { consoleKeyword, loopKeyword, numberKeyword, operatorKeyword, stringKeyword, variableKeyword } from "./keyword";
 
 export const service = (text: string) => {
     const arr: string[] = text.split('\n');
     const constVariableList = [];
     const variableList = [];
-    const result = [];
+    const result: (string | number)[] = [];
 
     let isNextLoop = false;
     let loopCount = 0;
@@ -75,10 +75,19 @@ export const service = (text: string) => {
         }
 
         // 콘솔문인지 확인하기
-        // 변수, 문자열인 경우 확인
+        // 변수, 문자열, 숫자인 경우 확인
         if (token.includes(consoleKeyword['print'])) {
             const value = token.split('.')[1];
-            result.push(value);
+            
+            if (token.includes(stringKeyword['stringStart'])) {
+                const startIndex = value.indexOf(stringKeyword['stringStart']) + 7;
+                const endIndex = value.indexOf(stringKeyword['stringEnd']);
+                result.push(value.substring(startIndex, endIndex));
+            } else if (token.includes(numberKeyword['numberStart'])) {
+                const comma = value.split(numberKeyword['numberStart'])[1];
+                result.push(getCount(comma, ','));
+            }
+            
         }
     }
 
