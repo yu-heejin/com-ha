@@ -27,11 +27,28 @@ export const service = (text: string) => {
         // 반복문인지 확인하기
         if (token.includes(loopKeyword['loopStart'])) {
             const loopCount = getCount(token, '~');
+            for (let i = 0; i < loopCount; i++) {
+
+            }
         }
 
         // 연산문인지 확인
         if (token.includes(operatorKeyword['operator'])) {
-
+            const op = token.charAt(0);
+            switch (op) {
+                case operatorKeyword['plus']:
+                    break;
+                case operatorKeyword['minus']:
+                    break;
+                case operatorKeyword['divide']:
+                    break;
+                case operatorKeyword['multiple']:
+                    break;
+                case operatorKeyword['remain']:
+                    break;
+                default:
+                    throw new Error('올바른 연산자가 아닙니다.');
+            }
         }
 
         // 콘솔문인지 확인하기
