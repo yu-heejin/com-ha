@@ -10,6 +10,20 @@
 ## 교수님들 어록 모음
 * [어록](https://github.com/yu-heejin/com-ha/blob/main/docs/%EC%96%B4%EB%A1%9D%20%EB%AA%A8%EC%9D%8C.md)
 
+## 실행 방법
+
+- client, server 모두 node 18버전을 사용합니다.
+
+### client
+
+1. yarn
+2. yarn start
+
+### node-server
+
+1. yarn
+2. yarn dev
+
 ## Contributor
 
 ## 컴-하 문법 ✏️
@@ -67,6 +81,8 @@ ${연산자}하도록 하세요.${더할 값}
 ```
 집에 가서 꼭 해보도록 합시다.${변수명}학생
 ```
+
+- [참고] `학생`은 예약어입니다.
 
 ### 전체 예시 코드
 
