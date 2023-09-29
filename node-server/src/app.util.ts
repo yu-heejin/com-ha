@@ -19,7 +19,8 @@ export const validateValues = (value: string) => {
         return getCount(comma, ',');
     }
     
-    throw new Error('타입이 일치하지 않습니다.');
+    return value;
+    //throw new Error('타입이 일치하지 않습니다.');
 }
 
 export const countNumber = (value: string) => {
@@ -48,14 +49,11 @@ export const getCount = (str: string, separator: string) => {
 /**
  * 연산자 및 더할 값 추출
  * @param str(코드)
- * @returns { 연산자, 더할 값 }
+ * @returns 연산자
  */
-export const getOperatorAndValue = (token: string) => {
+export const getOperator = (token: string) => {
     const str = token.split(operatorKeyword['operator']);
-    return {
-        operator: str[0].charAt(str[0].length - 1),
-        value: validateValues(str[1]),
-    };
+    return str[0].charAt(str[0].length - 1);
 }
 
 /**
@@ -73,5 +71,17 @@ export const getValue = (name: string, variableList: (string | number)[][]) => {
         }
     });
 
+    if (!value) {
+        throw new Error('변수 값이 존재하지 않습니다.');
+    }
+
     return value;
+}
+
+export const changeValue = (name: string | undefined, variableList: (string | number)[][], value: string | number) => {
+    variableList.map((variable) => {
+        if (variable[0] === name) {
+            variable[1] = value;
+        }
+    });
 }
