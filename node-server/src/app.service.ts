@@ -1,4 +1,4 @@
-import { changeValue, countNumber, getCount, getOperator, getValue, validateValues } from "./app.util";
+import { changeValue, countNumber, getConstValue, getCount, getOperator, getValue, validateValues } from "./app.util";
 import { consoleKeyword, loopKeyword, numberKeyword, operatorKeyword, stringKeyword, variableKeyword } from "./keyword";
 
 export const service = (text: string) => {
@@ -54,11 +54,24 @@ export const service = (text: string) => {
             const value = token.split('.')[1];
             if (value.includes('학생')) {
                 const name = value.split('학생')[0];
-                result.push(getValue(name, variableList));
+                const temp1 = getValue(name, variableList);
+                const temp2 = getConstValue(name, constVariableList);
+                if (temp1) {
+                    console.log(name, temp1);
+                    result.push(temp1);
+                } 
+                
+                if (temp2) {
+                    console.log(name, temp2);
+                    result.push(temp2);
+                }
+                
             } else if (value.includes(numberKeyword['numberStart'])){
                 result.push(countNumber(value));
             }
         }
+
+        console.log(variableList, constVariableList);
     }
 
     return result;
@@ -111,7 +124,7 @@ const getOperatorResult = (token: string, variableList: (string | number)[][]) =
     } else {
         throw new Error('값에 문제가 있거나 해당하는 변수를 찾을 수 없습니다.');
     }
-    
+
     changeValue(firstName, variableList, first);
     return first;
 }

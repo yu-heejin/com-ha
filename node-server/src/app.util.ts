@@ -23,6 +23,11 @@ export const validateValues = (value: string) => {
     //throw new Error('타입이 일치하지 않습니다.');
 }
 
+/**
+ * 숫자 변환기
+ * @param value 
+ * @returns 변환 숫자
+ */
 export const countNumber = (value: string) => {
     const comma = value.split(numberKeyword['numberStart'])[1];
     return getCount(comma, ',') || 0;
@@ -71,13 +76,33 @@ export const getValue = (name: string, variableList: (string | number)[][]) => {
         }
     });
 
-    if (!value) {
-        throw new Error('변수 값이 존재하지 않습니다.');
-    }
+    return value;
+}
+
+/**
+ * 배열 안에 해당 값이 있는지 확인(상수)
+ * @param name(변수명)
+ * @param variableList(변수 목록)
+ * @returns value
+ */
+export const getConstValue = (name: string, constVariableList: (string | number)[][]) => {
+    let value;
+
+    constVariableList.map((variable) => {
+        if (variable[0] === name) {
+            value = variable[1];
+        }
+    });
 
     return value;
 }
 
+/**
+ * 변수 값 수정
+ * @param name(변수명) 
+ * @param variableList(변수 목록)
+ * @param value(변경시킬 값)
+ */
 export const changeValue = (name: string | undefined, variableList: (string | number)[][], value: string | number) => {
     variableList.map((variable) => {
         if (variable[0] === name) {
