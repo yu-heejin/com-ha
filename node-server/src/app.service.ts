@@ -18,18 +18,20 @@ export const service = (text: string) => {
             for (let j = 0; j < loopCount; j++) {
                 if (token.includes(operatorKeyword['operator'])) {
                     const opResult = getOperatorResult(token, variableList);
+
                     if (token.includes(consoleKeyword['print'])) {
                         result.push(opResult);
                     }
                 } else if (token.includes(consoleKeyword['print'])) {
-                    const value = token.split('.')[1];
-                    result.push(value);
+                    result.push(getPrintElement(token.split('.')[1], variableList, constVariableList));
                 }
             }
+
             if (token === loopKeyword['loopEnd']) {
                 isNextLoop = false;
                 loopCount = 0;
             }
+            
             continue;
         }
 
@@ -51,27 +53,8 @@ export const service = (text: string) => {
                 result.push(opResult);
             }
         } else if (token.includes(consoleKeyword['print'])) {
-            const value = token.split('.')[1];
-            if (value.includes('학생')) {
-                const name = value.split('학생')[0];
-                const temp1 = getValue(name, variableList);
-                const temp2 = getConstValue(name, constVariableList);
-                if (temp1) {
-                    console.log(name, temp1);
-                    result.push(temp1);
-                } 
-                
-                if (temp2) {
-                    console.log(name, temp2);
-                    result.push(temp2);
-                }
-                
-            } else if (value.includes(numberKeyword['numberStart'])){
-                result.push(countNumber(value));
-            }
+            result.push(getPrintElement(token.split('.')[1], variableList, constVariableList));
         }
-
-        console.log(variableList, constVariableList);
     }
 
     return result;
@@ -125,6 +108,33 @@ const getOperatorResult = (token: string, variableList: (string | number)[][]) =
         throw new Error('값에 문제가 있거나 해당하는 변수를 찾을 수 없습니다.');
     }
 
-    changeValue(firstName, variableList, first);
+    if (firstToken.includes('학생?')) {
+        changeValue(firstName, variableList, first);
+    }
+    
     return first;
+}
+
+const getPrintElement = (
+    value: string, 
+    variableList: (string | number)[][], 
+    constVariableList: (string | number)[][]
+) => {
+    if (value.includes('학생')) {
+        const name = value.split('학생')[0];
+        const temp1 = getValue(name, variableList);
+        const temp2 = getConstValue(name, constVariableList);
+
+        if (temp1) {
+            return temp1
+        } 
+        
+        if (temp2) {
+            return temp2;
+        }
+    } else if (value.includes(numberKeyword['numberStart'])){
+        return countNumber(value);
+    }
+
+    return value;
 }
